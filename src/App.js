@@ -9,25 +9,21 @@ const App = () => {
   const { data, loading, error } = useCallApi({ url, type: 'get' })
   const [page, setPage] = useState(1)
 
-  const updateUrl = (newUrl, isNext) => () => {
+  const updateUrl = (newUrl, pageNum) => () => {
     setUrl(newUrl)
-    if (!isNext) {
-      setPage(page - 1)
-    } else {
-      setPage(page + 1)
-    }
+    setPage(page + pageNum)
   }
 
   return (
     <div className='App'>
       {
         data.previous && <button 
-          onClick={updateUrl(data.previous)}
+          onClick={updateUrl(data.previous, -1)}
         >prev</button>
       }
       {
         data.next && <button 
-          onClick={updateUrl(data.next, true)}
+          onClick={updateUrl(data.next, 1)}
         >next</button>
       }
       <div>{ page }</div>

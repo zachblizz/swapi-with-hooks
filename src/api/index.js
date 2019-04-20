@@ -12,7 +12,6 @@ const getData = async ({
     const jsonData = await resp.json()
 
     if (jsonData) {
-      console.log(jsonData)
       setData(jsonData)
     }
   } catch (err) {
