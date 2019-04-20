@@ -11,6 +11,8 @@ const App = () => {
 
   const updateUrl = (newUrl, pageNum) => () => {
     setUrl(newUrl)
+    // this works because it's a primative type (int)
+    // otherwise we'd have to make a copy (state is immutable)
     setPage(page + pageNum)
   }
 
