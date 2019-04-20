@@ -1,28 +1,45 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react'
+import { useCallApi } from './api'
+import { DataContext } from './context'
+import ShowData from './components/presentations/ShowData'
+import './App.css'
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
+const App = () => {
+  const [url, setUrl] = useState('https://swapi.co/api/people/?page=1')
+  const { data, loading, error } = useCallApi({ url, type: 'get' })
+  const [page, setPage] = useState(1)
+
+  const updateUrl = (newUrl, isNext) => () => {
+    setUrl(newUrl)
+    if (!isNext) {
+      setPage(page - 1)
+    } else {
+      setPage(page + 1)
+    }
   }
+
+  return (
+    <div className='App'>
+      {
+        data.previous && <button 
+          onClick={updateUrl(data.previous)}
+        >prev</button>
+      }
+      {
+        data.next && <button 
+          onClick={updateUrl(data.next, true)}
+        >next</button>
+      }
+      <div>{ page }</div>
+      <DataContext.Provider value={{
+        data,
+        loading,
+        error
+      }}>
+        <ShowData />
+      </DataContext.Provider>
+    </div>
+  )
 }
 
 export default App;
