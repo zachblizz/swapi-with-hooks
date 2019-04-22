@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react'
 
 const getData = async ({
   url,
-  setState
+  setDataInfo
 }) => {
   try {
-    setState({
+    setDataInfo({
       data: {},
       error: undefined,
       loading: true
@@ -14,7 +14,7 @@ const getData = async ({
     const jsonData = await resp.json()
 
     if (jsonData) {
-      setState({
+      setDataInfo({
         data: jsonData,
         error: undefined,
         loading: false
@@ -22,7 +22,7 @@ const getData = async ({
     }
   } catch (error) {
     console.error(error)
-    setState({
+    setDataInfo({
       data: {},
       error,
       loading: false
@@ -31,22 +31,24 @@ const getData = async ({
 }
 
 const useCallApi = ({url, type}) => {
-  let [state, setState] = useState({
-    loading: true,
+  let [dataInfo, setDataInfo] = useState({
+    loading: false,
     data: {},
     error: undefined
   })
 
+  // componentDidMount
+  // second param tells the effect to run again once changed
   useEffect(() => {
     if (type === 'get') {
       getData({
         url,
-        setState
+        setDataInfo
       })
     }
   }, [url])
 
-  return { ...state }
+  return dataInfo
 }
 
 export {
