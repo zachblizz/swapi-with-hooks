@@ -2,47 +2,51 @@ import { useState, useEffect } from 'react'
 
 const getData = async ({
   url,
-  setData,
-  setError,
-  setLoading
+  setState
 }) => {
   try {
-    setLoading(true)
+    setState({
+      data: {},
+      error: undefined,
+      loading: true
+    })
     const resp = await fetch(url)
     const jsonData = await resp.json()
 
     if (jsonData) {
-      setData(jsonData)
+      setState({
+        data: jsonData,
+        error: undefined,
+        loading: false
+      })
     }
-  } catch (err) {
-    console.error(err)
-    setError(err)
-  } finally {
-    setLoading(false)
+  } catch (error) {
+    console.error(error)
+    setState({
+      data: {},
+      error,
+      loading: false
+    })
   }
 }
 
 const useCallApi = ({url, type}) => {
-  let [loading, setLoading] = useState(true)
-  let [data, setData] = useState({})
-  let [error, setError] = useState(null)
+  let [state, setState] = useState({
+    loading: true,
+    data: {},
+    error: undefined
+  })
 
   useEffect(() => {
     if (type === 'get') {
       getData({
         url,
-        setLoading,
-        setData,
-        setError
+        setState
       })
     }
   }, [url])
 
-  return {
-    data,
-    loading,
-    error,
-  }
+  return { ...state }
 }
 
 export {

@@ -3,7 +3,7 @@ import { DataContext } from '../../context'
 
 const DummyContextReader = () => {
   const { data, loading, error } = useContext(DataContext)
-  
+  console.log('here')
   return (
     <div>
     {

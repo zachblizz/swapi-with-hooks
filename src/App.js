@@ -19,16 +19,23 @@ const App = () => {
   return (
     <div className='App'>
       {
-        data.previous && <button 
+        <button
+          disabled={!data.previous}
           onClick={updateUrl(data.previous, -1)}
         >prev</button>
       }
+      <div
+        style={{
+          display: 'inline-block',
+          margin: '20px 10px'
+        }}
+      >{ page }</div>
       {
-        data.next && <button 
+        <button
+          disabled={!data.next}
           onClick={updateUrl(data.next, 1)}
         >next</button>
       }
-      <div>{ page }</div>
       <DataContext.Provider value={{
         data,
         loading,
